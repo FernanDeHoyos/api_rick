@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <!-- Encabezado -->
+                    <h2 class="text-center mb-4 fw-bold text-success">
+                        <i class="bi bi-person-plus"></i> Crear Cuenta
+                    </h2>
+
+                    <!-- Formulario -->
+                    <form method="POST" action="{{ url_for('register') }}">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope"></i> Email
+                            </label>
+                            <input type="email" class="form-control shadow-sm" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">
+                                <i class="bi bi-lock"></i> Contraseña
+                            </label>
+                            <input type="password" class="form-control shadow-sm" id="password" name="password" placeholder="Crea una contraseña segura" required>
+                        </div>
+
+                        <!-- Botón -->
+                        <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </button>
+                    </form>
+
+                    <!-- Link a login -->
+                    <div class="text-center mt-3">
+                        <p class="mb-0">
+                            ¿Ya tienes cuenta? 
+                            <a href="{{ url_for('login') }}" class="text-decoration-none fw-semibold">Inicia sesión aquí</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <h2 class="text-center mb-4 fw-bold text-primary">
+                        <i class="bi bi-pencil-square"></i> Editar Tarea
+                    </h2>
+                    <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+                        <!-- Título -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label fw-semibold">
+                                <i class="bi bi-type"></i> Título
+                            </label>
+                            <input type="text" class="form-control shadow-sm" id="title" name="title" 
+                                   value="{{ task.title }}" required>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-semibold">
+                                <i class="bi bi-text-paragraph"></i> Descripción
+                            </label>
+                            <textarea class="form-control shadow-sm" id="description" name="description" rows="3">{{ task.description }}</textarea>
+                        </div>
+
+                        <!-- Fecha de vencimiento -->
+                        <div class="mb-3">
+                            <label for="due_date" class="form-label fw-semibold">
+                                <i class="bi bi-calendar-event"></i> Fecha de Vencimiento
+                            </label>
+                            <input type="date" class="form-control shadow-sm" id="due_date" name="due_date" 
+                                   value="{{ task.due_date if task.due_date else '' }}">
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-4">
+                            <label for="status" class="form-label fw-semibold">
+                                <i class="bi bi-flag"></i> Estado
+                            </label>
+                            <select class="form-select shadow-sm" id="status" name="status">
+                                <option value="Pendiente" {% if task.status == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                <option value="En progreso" {% if task.status == 'En progreso' %}selected{% endif %}>En Progreso</option>
+                                <option value="Completada" {% if task.status == 'Completada' %}selected{% endif %}>Completada</option>
+                            </select>
+                        </div>
+
+                        <!-- Botón -->
+                        <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">
+                            <i class="bi bi-save"></i> Actualizar Tarea
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Botón para regresar -->
+            <div class="text-center mt-3">
+                <a href="{{ url_for('tasks') }}" class="btn btn-outline-secondary shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Volver a Mis Tareas
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

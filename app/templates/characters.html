@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">Personajes de Rick and Morty</h2>
+        <a href="{{ url_for('tasks') }}" class="btn btn-outline-secondary btn-sm shadow-sm">
+            <i class="bi bi-arrow-left"></i> Volver a Tareas
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for character in characters %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card shadow-sm h-100 border-0 rounded-4">
+                <img src="{{ character.image }}" class="card-img-top rounded-top-4" alt="{{ character.name }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold text-dark">{{ character.name }}</h5>
+                    <p class="card-text mb-1"><span class="fw-semibold">Especie:</span> {{ character.species }}</p>
+                    <p class="card-text"><span class="fw-semibold">Estado:</span> 
+                        <span class="badge 
+                            {% if character.status == 'Alive' %} bg-success 
+                            {% elif character.status == 'Dead' %} bg-danger 
+                            {% else %} bg-secondary {% endif %}">
+                            {{ character.status }}
+                        </span>
+                    </p>
+                    <button type="button" 
+                            class="btn btn-primary btn-sm mt-2 px-3" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#associateModal{{ character.id }}">
+                        Asociar a Tarea
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para asociar -->
+        <div class="modal fade" id="associateModal{{ character.id }}" tabindex="-1" aria-labelledby="associateModalLabel{{ character.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 shadow">
+                    <div class="modal-header bg-primary text-white rounded-top-4">
+                        <h5 class="modal-title" id="associateModalLabel{{ character.id }}">
+                            Asociar personaje: {{ character.name }}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-3">Selecciona una tarea para asociar este personaje:</p>
+                        <form id="associateForm{{ character.id }}">
+                            <div class="mb-3">
+                                <select class="form-select shadow-sm" id="taskSelect{{ character.id }}" required>
+                                    <option selected disabled value="">Selecciona una tarea...</option>
+                                    {% for item in tasks_with_characters %}
+                                        {% set task = item.task %}
+                                        {% if task.user_id == current_user.id %}
+                                            <option value="{{ task.id }}">{{ task.title }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="associateCharacter({{ character.id }})">Asociar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Navegación de páginas -->
+    <div class="d-flex justify-content-between mt-5">
+        {% if info.prev %}
+            <a href="{{ url_for('list_characters', page=info.prev.split('=')[-1]) }}" class="btn btn-outline-primary shadow-sm">
+                ⬅ Página anterior
+            </a>
+        {% else %}
+            <span></span>
+        {% endif %}
+        {% if info.next %}
+            <a href="{{ url_for('list_characters', page=info.next.split('=')[-1]) }}" class="btn btn-outline-primary shadow-sm">
+                Página siguiente ➡
+            </a>
+        {% else %}
+            <span></span>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function associateCharacter(characterId) {
+        var taskId = document.getElementById('taskSelect' + characterId).value;
+        if (taskId) {
+            fetch(`/task/associate_character/${taskId}/${characterId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "{{ url_for('tasks') }}";
+                } else {
+                    alert('Error al asociar el personaje.');
+                }
+            });
+        } else {
+            alert('Por favor, selecciona una tarea.');
+        }
+    }
+</script>
+{% endblock %}

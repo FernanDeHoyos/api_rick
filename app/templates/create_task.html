@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h3 class="mb-0"><i class="bi bi-pencil-square"></i> Crear Nueva Tarea</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('create_task') }}">
+                        <!-- Título -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label fw-semibold">Título <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control shadow-sm" id="title" name="title" placeholder="Ej: Comprar víveres" required>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-semibold">Descripción</label>
+                            <textarea class="form-control shadow-sm" id="description" name="description" rows="3" placeholder="Detalles opcionales de la tarea..."></textarea>
+                        </div>
+
+                        <!-- Fecha de vencimiento -->
+                        <div class="mb-3">
+                            <label for="due_date" class="form-label fw-semibold">Fecha de Vencimiento</label>
+                            <input type="date" class="form-control shadow-sm" id="due_date" name="due_date">
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label fw-semibold">Estado</label>
+                            <select class="form-select shadow-sm" id="status" name="status">
+                                <option value="Pendiente" selected>📌 Pendiente</option>
+                                <option value="En progreso">🚧 En Progreso</option>
+                                <option value="Completada">✅ Completada</option>
+                            </select>
+                        </div>
+
+                        <!-- Botón Guardar -->
+                        <button type="submit" class="btn btn-primary w-100 shadow-sm py-2">
+                            <i class="bi bi-save"></i> Guardar Tarea
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-light rounded-bottom-4">
+                    <a href="{{ url_for('tasks') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Volver a Tareas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
