@@ -44,7 +44,7 @@ Además, integra la **Rick and Morty API** para asociar personajes a las tareas.
 
 ## 📂 Estructura del proyecto
 ```bash
-proyecto-tareas
+api_rick
 ├── app/
 │ ├── init.py # Configuración principal de la app (Flask, DB, LoginManager)
 │ ├── models.py # Modelos de la base de datos (User, Task)
@@ -85,7 +85,7 @@ proyecto-tareas
    
    ### 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/FernanDeHoyos/proyecto-tareas.git
+   git clone https://github.com/FernanDeHoyos/api_rick.git
    cd proyecto-tareas
 ```
 
